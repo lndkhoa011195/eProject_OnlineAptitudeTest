@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="OnlineAptitudeTestModelStoreContainer" CdmEntityContainer="OnlineAptitudeTestEntities">
-    <EntitySetMapping Name="Admin_Manager">
-      <EntityTypeMapping TypeName="OnlineAptitudeTestModel.Admin_Manager">
-        <MappingFragment StoreEntitySet="Admin_Manager">
-          <ScalarProperty Name="AdminID" ColumnName="AdminID" />
+    <EntitySetMapping Name="AdminManagers">
+      <EntityTypeMapping TypeName="OnlineAptitudeTestModel.AdminManager">
+        <MappingFragment StoreEntitySet="AdminManager">
+          <ScalarProperty Name="AdminManagerID" ColumnName="AdminManagerID" />
           <ScalarProperty Name="Username" ColumnName="Username" />
           <ScalarProperty Name="Password" ColumnName="Password" />
           <ScalarProperty Name="RoleID" ColumnName="RoleID" />
@@ -35,6 +35,16 @@
           <ScalarProperty Name="Pass" ColumnName="Pass" />
           <ScalarProperty Name="ScoreFinal" ColumnName="ScoreFinal" />
           <ScalarProperty Name="Last_Login" ColumnName="Last_Login" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Candidate_Test_Detail">
+      <EntityTypeMapping TypeName="OnlineAptitudeTestModel.Candidate_Test_Detail">
+        <MappingFragment StoreEntitySet="Candidate_Test_Detail">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="TestCode" ColumnName="TestCode" />
+          <ScalarProperty Name="CandidateID" ColumnName="CandidateID" />
+          <ScalarProperty Name="CandidateAnswer" ColumnName="CandidateAnswer" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -92,6 +102,15 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="TestCandidateLists">
+      <EntityTypeMapping TypeName="OnlineAptitudeTestModel.TestCandidateList">
+        <MappingFragment StoreEntitySet="TestCandidateList">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="TestCode" ColumnName="TestCode" />
+          <ScalarProperty Name="CandidateID" ColumnName="CandidateID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="TestQuestions">
       <EntityTypeMapping TypeName="OnlineAptitudeTestModel.TestQuestion">
         <MappingFragment StoreEntitySet="TestQuestion">
@@ -101,13 +120,5 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <AssociationSetMapping Name="TestCandidate" TypeName="OnlineAptitudeTestModel.TestCandidate" StoreEntitySet="TestCandidate">
-      <EndProperty Name="Candidate">
-        <ScalarProperty Name="CandidateID" ColumnName="CandidateID" />
-      </EndProperty>
-      <EndProperty Name="Test">
-        <ScalarProperty Name="TestCode" ColumnName="TestCode" />
-      </EndProperty>
-    </AssociationSetMapping>
   </EntityContainerMapping>
 </Mapping>

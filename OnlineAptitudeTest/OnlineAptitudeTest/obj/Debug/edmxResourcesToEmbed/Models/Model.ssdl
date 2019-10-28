@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="OnlineAptitudeTestModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-  <EntityType Name="Admin_Manager">
+  <EntityType Name="AdminManager">
     <Key>
-      <PropertyRef Name="AdminID" />
+      <PropertyRef Name="AdminManagerID" />
     </Key>
-    <Property Name="AdminID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AdminManagerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Username" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="RoleID" Type="int" Nullable="false" />
     <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
-    <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
-    <Property Name="Gender" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Gender" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="Birthday" Type="date" Nullable="false" />
     <Property Name="Phone" Type="varchar" MaxLength="45" />
     <Property Name="LastLogin" Type="datetime" />
@@ -24,8 +24,8 @@
     <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="RoleID" Type="int" Nullable="false" />
     <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
-    <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
-    <Property Name="Gender" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Gender" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="Birthday" Type="date" Nullable="false" />
     <Property Name="Phone" Type="varchar" MaxLength="45" />
     <Property Name="Education_Details" Type="ntext" />
@@ -34,6 +34,15 @@
     <Property Name="Pass" Type="int" />
     <Property Name="ScoreFinal" Type="float" />
     <Property Name="Last_Login" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Candidate_Test_Detail">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TestCode" Type="int" Nullable="false" />
+    <Property Name="CandidateID" Type="int" Nullable="false" />
+    <Property Name="CandidateAnswer" Type="ntext" Nullable="false" />
   </EntityType>
   <EntityType Name="Question">
     <Key>
@@ -84,11 +93,11 @@
     <Property Name="CreateBy" Type="int" Nullable="false" />
     <Property Name="Note" Type="ntext" />
   </EntityType>
-  <EntityType Name="TestCandidate">
+  <EntityType Name="TestCandidateList">
     <Key>
-      <PropertyRef Name="TestCode" />
-      <PropertyRef Name="CandidateID" />
+      <PropertyRef Name="ID" />
     </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="TestCode" Type="int" Nullable="false" />
     <Property Name="CandidateID" Type="int" Nullable="false" />
   </EntityType>
@@ -100,15 +109,27 @@
     <Property Name="TestCode" Type="int" Nullable="false" />
     <Property Name="QuestionID" Type="int" Nullable="false" />
   </EntityType>
-  <Association Name="FK__Admin_Man__RoleI__398D8EEE">
+  <Association Name="FK__AdminMana__RoleI__398D8EEE">
     <End Role="Role" Type="Self.Role" Multiplicity="1" />
-    <End Role="Admin_Manager" Type="Self.Admin_Manager" Multiplicity="*" />
+    <End Role="AdminManager" Type="Self.AdminManager" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Role">
         <PropertyRef Name="RoleID" />
       </Principal>
-      <Dependent Role="Admin_Manager">
+      <Dependent Role="AdminManager">
         <PropertyRef Name="RoleID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Candidate__Candi__5535A963">
+    <End Role="Candidate" Type="Self.Candidate" Multiplicity="1" />
+    <End Role="Candidate_Test_Detail" Type="Self.Candidate_Test_Detail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Candidate">
+        <PropertyRef Name="CandidateID" />
+      </Principal>
+      <Dependent Role="Candidate_Test_Detail">
+        <PropertyRef Name="CandidateID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -132,6 +153,18 @@
         <PropertyRef Name="TestCode" />
       </Principal>
       <Dependent Role="Candidate">
+        <PropertyRef Name="TestCode" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Candidate__TestC__5441852A">
+    <End Role="Test" Type="Self.Test" Multiplicity="1" />
+    <End Role="Candidate_Test_Detail" Type="Self.Candidate_Test_Detail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Test">
+        <PropertyRef Name="TestCode" />
+      </Principal>
+      <Dependent Role="Candidate_Test_Detail">
         <PropertyRef Name="TestCode" />
       </Dependent>
     </ReferentialConstraint>
@@ -161,37 +194,37 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK__Test__CreateBy__3D5E1FD2">
-    <End Role="Admin_Manager" Type="Self.Admin_Manager" Multiplicity="1" />
+    <End Role="AdminManager" Type="Self.AdminManager" Multiplicity="1" />
     <End Role="Test" Type="Self.Test" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="Admin_Manager">
-        <PropertyRef Name="AdminID" />
+      <Principal Role="AdminManager">
+        <PropertyRef Name="AdminManagerID" />
       </Principal>
       <Dependent Role="Test">
         <PropertyRef Name="CreateBy" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__TestCandi__Candi__5070F446">
+  <Association Name="FK__TestCandi__Candi__5165187F">
     <End Role="Candidate" Type="Self.Candidate" Multiplicity="1" />
-    <End Role="TestCandidate" Type="Self.TestCandidate" Multiplicity="*" />
+    <End Role="TestCandidateList" Type="Self.TestCandidateList" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Candidate">
         <PropertyRef Name="CandidateID" />
       </Principal>
-      <Dependent Role="TestCandidate">
+      <Dependent Role="TestCandidateList">
         <PropertyRef Name="CandidateID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__TestCandi__TestC__5165187F">
+  <Association Name="FK__TestCandi__TestC__5070F446">
     <End Role="Test" Type="Self.Test" Multiplicity="1" />
-    <End Role="TestCandidate" Type="Self.TestCandidate" Multiplicity="*" />
+    <End Role="TestCandidateList" Type="Self.TestCandidateList" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Test">
         <PropertyRef Name="TestCode" />
       </Principal>
-      <Dependent Role="TestCandidate">
+      <Dependent Role="TestCandidateList">
         <PropertyRef Name="TestCode" />
       </Dependent>
     </ReferentialConstraint>
@@ -221,18 +254,23 @@
     </ReferentialConstraint>
   </Association>
   <EntityContainer Name="OnlineAptitudeTestModelStoreContainer">
-    <EntitySet Name="Admin_Manager" EntityType="Self.Admin_Manager" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="AdminManager" EntityType="Self.AdminManager" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Candidate" EntityType="Self.Candidate" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Candidate_Test_Detail" EntityType="Self.Candidate_Test_Detail" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Question" EntityType="Self.Question" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="QuestionType" EntityType="Self.QuestionType" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Score" EntityType="Self.Score" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Test" EntityType="Self.Test" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="TestCandidate" EntityType="Self.TestCandidate" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TestCandidateList" EntityType="Self.TestCandidateList" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TestQuestion" EntityType="Self.TestQuestion" Schema="dbo" store:Type="Tables" />
-    <AssociationSet Name="FK__Admin_Man__RoleI__398D8EEE" Association="Self.FK__Admin_Man__RoleI__398D8EEE">
+    <AssociationSet Name="FK__AdminMana__RoleI__398D8EEE" Association="Self.FK__AdminMana__RoleI__398D8EEE">
       <End Role="Role" EntitySet="Role" />
-      <End Role="Admin_Manager" EntitySet="Admin_Manager" />
+      <End Role="AdminManager" EntitySet="AdminManager" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Candidate__Candi__5535A963" Association="Self.FK__Candidate__Candi__5535A963">
+      <End Role="Candidate" EntitySet="Candidate" />
+      <End Role="Candidate_Test_Detail" EntitySet="Candidate_Test_Detail" />
     </AssociationSet>
     <AssociationSet Name="FK__Candidate__RoleI__403A8C7D" Association="Self.FK__Candidate__RoleI__403A8C7D">
       <End Role="Role" EntitySet="Role" />
@@ -241,6 +279,10 @@
     <AssociationSet Name="FK__Candidate__TestC__412EB0B6" Association="Self.FK__Candidate__TestC__412EB0B6">
       <End Role="Test" EntitySet="Test" />
       <End Role="Candidate" EntitySet="Candidate" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Candidate__TestC__5441852A" Association="Self.FK__Candidate__TestC__5441852A">
+      <End Role="Test" EntitySet="Test" />
+      <End Role="Candidate_Test_Detail" EntitySet="Candidate_Test_Detail" />
     </AssociationSet>
     <AssociationSet Name="FK__Question__TypeID__48CFD27E" Association="Self.FK__Question__TypeID__48CFD27E">
       <End Role="QuestionType" EntitySet="QuestionType" />
@@ -251,16 +293,16 @@
       <End Role="Score" EntitySet="Score" />
     </AssociationSet>
     <AssociationSet Name="FK__Test__CreateBy__3D5E1FD2" Association="Self.FK__Test__CreateBy__3D5E1FD2">
-      <End Role="Admin_Manager" EntitySet="Admin_Manager" />
+      <End Role="AdminManager" EntitySet="AdminManager" />
       <End Role="Test" EntitySet="Test" />
     </AssociationSet>
-    <AssociationSet Name="FK__TestCandi__Candi__5070F446" Association="Self.FK__TestCandi__Candi__5070F446">
+    <AssociationSet Name="FK__TestCandi__Candi__5165187F" Association="Self.FK__TestCandi__Candi__5165187F">
       <End Role="Candidate" EntitySet="Candidate" />
-      <End Role="TestCandidate" EntitySet="TestCandidate" />
+      <End Role="TestCandidateList" EntitySet="TestCandidateList" />
     </AssociationSet>
-    <AssociationSet Name="FK__TestCandi__TestC__5165187F" Association="Self.FK__TestCandi__TestC__5165187F">
+    <AssociationSet Name="FK__TestCandi__TestC__5070F446" Association="Self.FK__TestCandi__TestC__5070F446">
       <End Role="Test" EntitySet="Test" />
-      <End Role="TestCandidate" EntitySet="TestCandidate" />
+      <End Role="TestCandidateList" EntitySet="TestCandidateList" />
     </AssociationSet>
     <AssociationSet Name="FK__TestQuest__Quest__4D94879B" Association="Self.FK__TestQuest__Quest__4D94879B">
       <End Role="Question" EntitySet="Question" />
