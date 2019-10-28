@@ -18,6 +18,13 @@ namespace OnlineAptitudeTest.Controllers
             return View();
         }
 
+        public ActionResult create()
+        {
+            if (!user.IsAdmin())
+                return View("Error");
+            return View();
+        }
+
         public ActionResult Logout()
         {
             if (!user.IsAdmin())
