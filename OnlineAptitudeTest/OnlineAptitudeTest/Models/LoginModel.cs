@@ -18,18 +18,18 @@ namespace OnlineAptitudeTest.Models
             model.Password = Common.Encryptor.MD5Hash(model.Password);
             try
             {
-                if (Convert.ToBoolean(db.Admin_Manager.First(x => x.Username == model.Username && x.Password == model.Password).AdminID))
+                if (Convert.ToBoolean(db.AdminManagers.First(x => x.Username == model.Username && x.Password == model.Password).AdminManagerID))
                 {
-                    SetAdminSession(db.Admin_Manager.First(x => x.Username == model.Username && x.Password == model.Password).AdminID);
+                    SetAdminSession(db.AdminManagers.First(x => x.Username == model.Username && x.Password == model.Password).AdminManagerID);
                     return true;
                 }
             }
             catch (Exception) { }
             try
             {
-                if (Convert.ToBoolean(db.Admin_Manager.First(x => x.Username == model.Username && x.Password == model.Password).AdminID))
+                if (Convert.ToBoolean(db.AdminManagers.First(x => x.Username == model.Username && x.Password == model.Password).AdminManagerID))
                 {
-                    SetTeacherSession(db.Admin_Manager.First(x => x.Username == model.Username && x.Password == model.Password).AdminID);
+                    SetTeacherSession(db.AdminManagers.First(x => x.Username == model.Username && x.Password == model.Password).AdminManagerID);
                     return true;
                 }
             }
@@ -48,9 +48,9 @@ namespace OnlineAptitudeTest.Models
 
         public void SetAdminSession(int userID)
         {
-            Admin_Manager user = db.Admin_Manager.SingleOrDefault(x => x.AdminID == userID);
+            AdminManager user = db.AdminManagers.SingleOrDefault(x => x.AdminManagerID == userID);
             HttpContext.Current.Session.Add(Common.UserSession.ISLOGIN, true);
-            HttpContext.Current.Session.Add(Common.UserSession.ID, user.AdminID);
+            HttpContext.Current.Session.Add(Common.UserSession.ID, user.AdminManagerID);
             HttpContext.Current.Session.Add(Common.UserSession.ROLEID, user.RoleID);
             HttpContext.Current.Session.Add(Common.UserSession.USERNAME, user.Username);
             HttpContext.Current.Session.Add(Common.UserSession.EMAIL, user.Email);
@@ -58,9 +58,9 @@ namespace OnlineAptitudeTest.Models
         }
         public void SetTeacherSession(int userID)
         {
-            Admin_Manager user = db.Admin_Manager.SingleOrDefault(x => x.AdminID == userID);
+            AdminManager user = db.AdminManagers.SingleOrDefault(x => x.AdminManagerID == userID);
             HttpContext.Current.Session.Add(Common.UserSession.ISLOGIN, true);
-            HttpContext.Current.Session.Add(Common.UserSession.ID, user.AdminID);
+            HttpContext.Current.Session.Add(Common.UserSession.ID, user.AdminManagerID);
             HttpContext.Current.Session.Add(Common.UserSession.ROLEID, user.RoleID);
             HttpContext.Current.Session.Add(Common.UserSession.USERNAME, user.Username);
             HttpContext.Current.Session.Add(Common.UserSession.EMAIL, user.Email);
