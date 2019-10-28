@@ -1,4 +1,4 @@
-﻿USE master
+USE master
 IF EXISTS(SELECT * FROM sys.databases where name='OnlineAptitudeTest')
 DROP DATABASE OnlineAptitudeTest
 
