@@ -12,14 +12,14 @@ CREATE TABLE [Role](
 	[RoleName] [varchar](50) NOT NULL,
 )
 ​
-CREATE TABLE [Admin_Manager](
-    [AdminID] int IDENTITY(1,1) NOT NULL PRIMARY KEY,
+CREATE TABLE [AdminManager](
+    [AdminManagerID] int IDENTITY(1,1) NOT NULL PRIMARY KEY,
 	[Username] [varchar](50) NOT NULL,
 	[Password] [varchar](50) NOT NULL,
 	[RoleID] [int] NOT NULL FOREIGN KEY REFERENCES [Role]([RoleID]),
 	[Email] [varchar](100) NOT NULL,
-	[Name] [nvarchar](100) NOT NULL,
-	[Gender] [nvarchar](50) NOT NULL,
+	[Name] [varchar](100) NOT NULL,
+	[Gender] [varchar](50) NOT NULL,
 	[Birthday] [date] NOT NULL,
 	[Phone] [varchar](45) NULL,
 	[LastLogin] [datetime] NULL,
@@ -30,7 +30,7 @@ CREATE TABLE [Test](
 	[Time_To_Do] [int] NOT NULL,
 	[TimeStart] [datetime] NOT NULL,
 	[TimeCreate] [datetime] default getdate(), 
-	[CreateBy] [int] NOT NULL FOREIGN KEY REFERENCES [Admin_Manager]([AdminID]),
+	[CreateBy] [int] NOT NULL FOREIGN KEY REFERENCES [AdminManager]([AdminManagerID]),
 	[Note] [ntext] NULL,
 )
 ​
@@ -40,8 +40,8 @@ CREATE TABLE [Candidate](
 	[Password] [varchar](50) NOT NULL,
 	[RoleID] [int] NOT NULL FOREIGN KEY REFERENCES [Role]([RoleID]),
 	[Email] [varchar](100) NOT NULL,
-	[Name] [nvarchar](100) NOT NULL,
-	[Gender] [nvarchar](50) NOT NULL,
+	[Name] [varchar](100) NOT NULL,
+	[Gender] [varchar](50) NOT NULL,
 	[Birthday] [date] NOT NULL,
 	[Phone] [varchar](45) NULL,
 	[Education_Details] [ntext] NULL,
@@ -86,13 +86,17 @@ CREATE TABLE [TestQuestion](
 	[QuestionID] [int] NOT NULL FOREIGN KEY REFERENCES [Question]([QuestionID]),
 )
 
-CREATE TABLE [TestCandidate](
-	[TestCode] int NOT NULL ,
-	[CandidateID] int NOT NULL,
+CREATE TABLE [TestCandidateList](
+	[ID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[TestCode] int NOT NULL FOREIGN KEY REFERENCES [Test]([TestCode]),
+	[CandidateID] int NOT NULL FOREIGN KEY REFERENCES [Candidate]([CandidateID]),
+)
 
-	PRIMARY KEY([TestCode],[CandidateID]),​
-	FOREIGN KEY ([CandidateID]) REFERENCES [Candidate]([CandidateID]),
-	FOREIGN KEY ([TestCode]) REFERENCES [Test]([TestCode]),
+CREATE TABLE [Candidate_Test_Detail](
+    [ID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[TestCode] [int] NOT NULL FOREIGN KEY REFERENCES [Test]([TestCode]),
+	[CandidateID] [int] NOT NULL FOREIGN KEY REFERENCES [Candidate]([CandidateID]),
+	[CandidateAnswer] [ntext] NOT NULL,
 )
 ​
 ​
@@ -102,13 +106,13 @@ INSERT INTO [Role] ([RoleName]) VALUES ('Admin');
 INSERT INTO [Role] ([RoleName]) VALUES ('Manager'); 
 INSERT INTO [Role] ([RoleName]) VALUES ('Candidate');
 ​
-INSERT INTO [Admin_Manager] ([Username],[Password],[RoleID],[Email],[Name],[Gender],[Birthday],[Phone],[LastLogin]) 
+INSERT INTO [AdminManager] ([Username],[Password],[RoleID],[Email],[Name],[Gender],[Birthday],[Phone],[LastLogin]) 
                    VALUES ('PhamHuynh','e10adc3949ba59abbe56e057f20f883e',1,'PhamHuynh@gmail.com','Pham Huynh','male','1/1/1999','0123456789','1/1/2019');
-INSERT INTO [Admin_Manager] ([Username],[Password],[RoleID],[Email],[Name],[Gender],[Birthday],[Phone],[LastLogin]) 
+INSERT INTO [AdminManager] ([Username],[Password],[RoleID],[Email],[Name],[Gender],[Birthday],[Phone],[LastLogin]) 
                    VALUES ('LeKhoa','e10adc3949ba59abbe56e057f20f883e',1,'KhoaLe@gmail.com','Le Khoa','male','1/1/1999','0123456789','1/1/2019');
-INSERT INTO [Admin_Manager] ([Username],[Password],[RoleID],[Email],[Name],[Gender],[Birthday],[Phone],[LastLogin]) 
+INSERT INTO [AdminManager] ([Username],[Password],[RoleID],[Email],[Name],[Gender],[Birthday],[Phone],[LastLogin]) 
                    VALUES ('HaTan','e10adc3949ba59abbe56e057f20f883e',2,'HaTan@gmail.com','Ha Tan','male','1/1/1999','0123456789','1/1/2019');
-INSERT INTO [Admin_Manager] ([Username],[Password],[RoleID],[Email],[Name],[Gender],[Birthday],[Phone],[LastLogin]) 
+INSERT INTO [AdminManager] ([Username],[Password],[RoleID],[Email],[Name],[Gender],[Birthday],[Phone],[LastLogin]) 
                    VALUES ('ThanhTai','e10adc3949ba59abbe56e057f20f883e',2,'ThanhTai@gmail.com','Thanh Tai','male','1/1/1999','0123456789','1/1/2019');
 ​
 INSERT INTO [Candidate] ([Username],[Password],[RoleID],[Email],[Name],[Gender],[Birthday],[Phone])
